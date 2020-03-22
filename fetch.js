@@ -49,7 +49,7 @@ Promise.all(pages).then(
                             // console.log(path.join(__dirname, `/pages-forum/${type}_${title}_${time}.html`))
                             fs.writeFileSync(
                                 path.join(__dirname, `/pages-forum/${time.getTime()}--${type}_${title}.html`),
-                                post
+                                '<div style="color:white; background:darkgray;">' + post + '</div>'
                             );
                         });
                     }

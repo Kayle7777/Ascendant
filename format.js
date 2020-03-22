@@ -9,6 +9,8 @@ fs.readdir(folder, (__err, data) => {
             body = $('*');
         body.prepend('<div style="color:white; background:darkgray;">');
         body.append('</div>');
-        fs.writeFileSync(dir, body.html());
+        console.log(body.html());
+        break;
+        // fs.writeFileSync(dir, body.html());
     }
 });
