@@ -48,8 +48,8 @@ Promise.all(pages).then(
                                 post = $('div.bbWrapper', this).html();
                             // console.log(path.join(__dirname, `/pages-forum/${type}_${title}_${time}.html`))
                             fs.writeFileSync(
-                                path.join(__dirname, `/pages-forum/${time.getTime()}--${type}_${title}.html`),
-                                '<div style="color:white; background:darkgray;">' + post + '</div>'
+                                path.join(__dirname, `/pages-edited/${time.getTime()}--${type}_${title}.html`),
+                                '<div style="color:white;background:#0000DF;padding: 2.5em;font-size: 2em;font-family: monospace;">' + post + '</div>'
                             );
                         });
                     }
