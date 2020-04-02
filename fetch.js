@@ -43,7 +43,8 @@ Promise.all(pages).then(
                                 title = $('.message-cell--threadmark-header span', this)
                                     .text()
                                     .replace(/[\\\/:]/g, '-')
-                                    .replace(/"/g, ''),
+                                    .replace(/"/g, '')
+                                    .replace(/\.?New$/, ''),
                                 time = new Date($('time', this).attr('datetime')),
                                 post = $('div.bbWrapper', this).html();
                             // console.log(path.join(__dirname, `/pages-forum/${type}_${title}_${time}.html`))
