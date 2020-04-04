@@ -52,8 +52,8 @@ Promise.all(pages).then(
                             // console.log(path.join(__dirname, `/pages-forum/${type}_${title}_${time}.html`))
                             fs.writeFileSync(
                                 path.join(__dirname, `${baseFileDir}${time.getTime()}--${type}_${title}.html`),
-                                '<div style="color:white;background:#0000DF;padding: 2.5em;font-size: 2em;font-family: monospace;">' + post + '</div>'
-                            );
+                                '<link rel="stylesheet" href="asc.css"><div class="storytext">' + post + '</div>'
+                            );   
                         });
                     }
                 },
