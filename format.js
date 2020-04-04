@@ -37,9 +37,16 @@ const callbacks = {
     removeStyle: function(__absoluteFilePath, fileText) {
         return fileText.replace('style="font-size: 0.750rem"', '')
     },
+
+    addJQueryCDN: function(__absoluteFilePath, fileText) {
+        return fileText.replace(
+            '<script type="text/javascript" src="asc.js">',
+            '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script><script type="text/javascript" src="asc.js">'
+        );
+    }
 }
 
 
 
-// formatFiles(callbacks.addAscJs);
+formatFiles(callbacks.addJQueryCDN);
 
