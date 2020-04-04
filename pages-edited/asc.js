@@ -1,5 +1,4 @@
 $(document).keydown(function(e) {
-    console.log(e.which);
     switch(e.which) {
         case 37: {
             return $('.sidenav').find('a')[0].click();
