@@ -39,22 +39,42 @@ html {
     left: 0;
     background-color: #111; /* Black */
     overflow: hidden; /* Disable horizontal scroll */
-  }
+    display: flex;
+    align-items: center;
+}
 
 /* The navigation menu links */
+.sidenav a:before {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    content: '<';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.sidenav-right a:before  {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    content: '>';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .sidenav a, .sidenav-right a {
-    /* padding: 6px 8px 6px 16px; */
-    /* text-decoration: none; */
     font-size: 4rem;
     color: white;
     display: block;
     text-align: center;
     margin: auto;
-    width: 100%;
     height: 100%;
+    width: 100%;
     text-decoration: none;
     position: absolute;
-    top: 45%;
+    margin: auto;
+    display: flex;
 }
 
 /* When you mouse over the navigation links, change their color */

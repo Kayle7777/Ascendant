@@ -1,7 +1,14 @@
+'use strict';
 const fs      = require('fs'),
       path    = require('path'),
       cheerio = require('cheerio'),
       folder  = path.join(__dirname, '/pages-edited');
+
+Object.defineProperty( String.prototype, 'toCheerioObject', {
+    value: function() {
+        return cheerio.load(this);
+    },
+});
 
 function formatFiles(callback) {
     fs.readdir(folder, (__err, filenames) => {
@@ -22,7 +29,7 @@ const callbacks = {
         filenames = filenames.map(name => path.join(folder, name));
         let prevButtonLink = filenames[filenames.indexOf(absoluteFilePath) - 1] || filenames[filenames.length - 1],
             nextButtonLink = filenames[filenames.indexOf(absoluteFilePath) + 1] || filenames[0];
-        $ = cheerio.load(fileText);
+        $ = fileText.toCheerioObject();
         $('.storytext').prepend($(`<div class="sidenav"><a type='button' rel='noopener noreferrer' href="${prevButtonLink}"><</a></div>`));
         $('.storytext').append($(`<div class="sidenav-right"><a type='button' rel='noopener noreferrer' href="${nextButtonLink}">></a></div>`));
         return $.html();
@@ -43,10 +50,16 @@ const callbacks = {
             '<script type="text/javascript" src="asc.js">',
             '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script><script type="text/javascript" src="asc.js">'
         );
+    },
+
+    cheerioRemoveCarets(__absoluteFilePath, fileText) {
+        fileText = fileText.toCheerioObject();
+        fileText('a').attr('tabIndex', '0');        
+        return fileText.html();
     }
 }
 
 
 
-formatFiles(callbacks.addJQueryCDN);
+formatFiles(callbacks.cheerioRemoveCarets);
 
