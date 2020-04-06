@@ -1,7 +1,6 @@
 'use strict';
 
 const fetch = require('node-fetch'),
-    cheerio = require('cheerio'),
     formatting = require('./format'),
     baseUrls = [
         { url: 'https://forums.spacebattles.com/threads/imperium-ascendant-heresy-less-40k.596194/reader/', pages: 6 },
@@ -40,23 +39,24 @@ const masterPageList = (() => {
 })();
 
 module.exports = {
-    getJayfictionPosts: function (finalFn) {
-        Promise.all(masterPageList.map((pageUrl) => fetch(pageUrl))).then(
+    getJayfictionPosts: function (callbackFn) {
+        Promise.all(masterPageList.map((pageUrl) => fetch(pageUrl)))
+        .then(
             (fetchPages) => {
                 Promise.all(fetchPages.map((bufferPageObject) => bufferPageObject.text()))
                     .then(
                         (pages) => {
                             const jayFictionPosts = [];
                             for (let page of pages) {
-                                jayFictionPosts.push(formatting.scrapeForJayfictionPosts(page));
+                                jayFictionPosts.push(...formatting.scrapeForJayfictionPosts(page));
                             }
-                            finalFn(jayFictionPosts);
+                            callbackFn(jayFictionPosts);
                         },
                         (reject) => console.log(reject)
                     )
                     .catch((err) => console.log(err));
             },
-            (reject) => console.log(reject).catch((err) => console.log(err))
-        );
+            (reject) => console.log(reject))
+        .catch((err) => console.log(err));
     },
 };

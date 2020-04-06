@@ -8,9 +8,12 @@ Object.defineProperty( String.prototype, 'toCheerioObject', {
 
 const fs          = require('fs'),
       path        = require('path'),
+      cheerio     = require('cheerio'),
       fetch       = require('node-fetch'),
       fetchScripts= require('./fetch.js'),
       formatting  = require('./format.js');
+
+
 const exports = {
     getLocalFilenames: (editedFolder = false) => {
         let _folder = __dirname + (editedFolder ? '/pages-forum/' : '/pages-edited/');
@@ -25,7 +28,7 @@ const exports = {
             const fullPath = path.join(_folder, fileName);
             accu[i] = {
                 title: fileName,
-                content: fs.readFileSync(fullPath, { encoding: 'utf-8' })
+                value: fs.readFileSync(fullPath, { encoding: 'utf-8' })
             }
             return accu;    
         }, {})

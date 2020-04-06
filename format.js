@@ -1,30 +1,34 @@
 'use strict';
 const fs      = require('fs'),
       path    = require('path'),
-      pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);
-module.exports = {
-    addSidebarButtons: (fileName) => {
-        // Get absolute path
-        const filenames = fs.readdirSync(folder)
-                .filter(name => !/\.js$|\.css$/.test(name))
-                .map(name => path.join(folder, name));
-        return fileText => {
-            let $              = fileText.toCheerioObject(),
-                prevButtonLink = filenames[filenames.indexOf(fileName) - 1] || filenames[filenames.length - 1],
-                nextButtonLink = filenames[filenames.indexOf(fileName) + 1] || filenames[0];
+      scripts = require('scripts.js'),
+      pipe    = (...fns) => (x) => fns.reduce((v, f) => f(v), x);
 
-            $('.storytext').prepend($(`<div class="sidenav"><a type='button' rel='noopener noreferrer' href="${prevButtonLink}"></a></div>`));
-            $('.storytext').append($(`<div class="sidenav-right"><a type='button' rel='noopener noreferrer' href="${nextButtonLink}"></a></div>`));
-            return $.html()
-        };
+module.exports = {    
+    buildHtmlPipe: (post, fileName) => {
+        return pipe(
+                this.removeStyle,
+                this.addStorytextDiv,
+                this.addLocalCss,
+                this.addJQueryCDN,
+                this.addLocalJs,
+                this.addSidebarButtons(fileName),
+            )(post);
+    },
+
+    removeStyle: function(fileText) {
+        return fileText.replace('style="font-size: 0.750rem"', '')
     },
 
     addStorytextDiv: function(fileText) {
         return '<html><head></head><body><div class="storytext">' + fileText + '</div></body></html>';
     },
-
-    removeStyle: function(fileText) {
-        return fileText.replace('style="font-size: 0.750rem"', '')
+    
+    addLocalCss: function(fileText) {
+        return fileText.replace(
+            '</head>',
+            '<link rel="stylesheet" href="asc.css"></head>'
+        );
     },
 
     addJQueryCDN: function(fileText) {
@@ -41,18 +45,27 @@ module.exports = {
         );
     },
 
-    addLocalCss: function(fileText) {
-        return fileText.replace(
-            '</head>',
-            '<link rel="stylesheet" href="asc.css"></head>'
-        );
+    addSidebarButtons: (fileName, editFolder = false) => {
+        // Get absolute path
+        const filenames = scripts.getLocalFilenames()
+                          .map(name => path.join(__dirname, editFolder ? '/pages-edited/' : '/pages-forum/', name));
+        
+        return fileText => {
+            let              $ = fileText.toCheerioObject(),
+                prevButtonLink = filenames[filenames.indexOf(fileName) - 1] || filenames[filenames.length - 1],
+                nextButtonLink = filenames[filenames.indexOf(fileName) + 1] || filenames[0];
+
+            $('.storytext').prepend($(`<div class="sidenav"><a type='button' rel='noopener noreferrer' href="${prevButtonLink}"></a></div>`));
+            $('.storytext').append($(`<div class="sidenav-right"><a type='button' rel='noopener noreferrer' href="${nextButtonLink}"></a></div>`));
+            return $.html()
+        };
     },
 
     scrapeForJayfictionPosts: function(page) {
         page = page.toCheerioObject();
         const articles = [];
         page('article.hasThreadmark[data-author="Jayfiction"]').each(function() {
-            return {
+            return articles.push({
                 type: page('.message-cell--threadmark-header label', this)
                         .text()
                         .replace(/[\\\/:]/g, '-')
@@ -65,20 +78,8 @@ module.exports = {
                 time: new Date(page('time', this).attr('datetime')),
                 fileName: `${pagesForum}${time.getTime()}--${type}_${title}.html`,
                 post: page('div.bbWrapper', this).html()
-            }
+            })
         });
+        return articles;
     },
-    
-    buildHtml: (post, fileName) => {
-        return pipe(
-                this.removeStyle,
-                this.addStorytextDiv,
-                this.addLocalCss,
-                this.addJQueryCDN,
-                this.addLocalJs,
-                this.addSidebarButtons(fileName),
-            )
-        (post);
-    },
-    
 }
