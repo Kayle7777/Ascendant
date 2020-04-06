@@ -78,7 +78,7 @@ module.exports = {
                 time: new Date(page('time', this).attr('datetime')),
                 fileName: `${pagesForum}${time.getTime()}--${type}_${title}.html`,
                 post: page('div.bbWrapper', this).html()
-            })
+            });
         });
         return articles;
     },
