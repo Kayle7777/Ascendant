@@ -57,7 +57,7 @@ module.exports = {
 
             $('.storytext').prepend($(`<div class="sidenav"><a type='button' rel='noopener noreferrer' href="${prevButtonLink}"></a></div>`));
             $('.storytext').append($(`<div class="sidenav-right"><a type='button' rel='noopener noreferrer' href="${nextButtonLink}"></a></div>`));
-            return $.html()
+            return $.html();
         };
     },
 
