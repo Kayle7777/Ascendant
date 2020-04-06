@@ -56,7 +56,8 @@ module.exports = {
                     )
                     .catch((err) => console.log(err));
             },
-            (reject) => console.log(reject))
+            (reject) => console.log(reject)
+        )
         .catch((err) => console.log(err));
     },
 };
