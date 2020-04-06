@@ -76,7 +76,7 @@ module.exports = {
                         .replace(/"/g, '')
                         .replace(/New$/, ''),
                 time: new Date(page('time', this).attr('datetime')),
-                fileName: `${pagesForum}${time.getTime()}--${type}_${title}.html`,
+                fileName: `${time.getTime()}--${type}_${title}.html`,
                 post: page('div.bbWrapper', this).html()
             });
         });
