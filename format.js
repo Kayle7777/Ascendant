@@ -48,7 +48,7 @@ module.exports = {
     addSidebarButtons: (fileName, editFolder = false) => {
         // Get absolute path
         const filenames = scripts.getLocalFilenames()
-                          .map(name => path.join(__dirname, editFolder ? '/pages-edited/' : '/pages-forum/', name));
+                          .map(name => path.join(__dirname, editFolder ? 'pages-edited' : 'pages-forum', name));
         
         return fileText => {
             let              $ = fileText.toCheerioObject(),
