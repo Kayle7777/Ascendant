@@ -61,7 +61,7 @@ module.exports = {
         };
     },
 
-    scrapeForJayfictionPosts: function(page) {
+    scrapePageForJayfictionPosts: function(page) {
         page = page.toCheerioObject();
         const articles = [];
         page('article.hasThreadmark[data-author="Jayfiction"]').each(function() {

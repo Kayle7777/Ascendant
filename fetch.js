@@ -48,7 +48,7 @@ module.exports = {
                         (pages) => {
                             const jayFictionPosts = [];
                             for (let page of pages) {
-                                jayFictionPosts.push(...formatting.scrapeForJayfictionPosts(page));
+                                jayFictionPosts.push(...formatting.scrapePageForJayfictionPosts(page));
                             }
                             callbackFn(jayFictionPosts);
                         },
