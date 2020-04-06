@@ -71,10 +71,10 @@ module.exports = {
                         .replace(/[\\\/:]/g, '-')
                         .replace(/"/g, ''),
                 title: page('.message-cell--threadmark-header span', this)
-                    .text()
+                        .text()
                         .replace(/[\\\/:]/g, '-')
                         .replace(/"/g, '')
-                        .replace(/\.?New$/, ''),
+                        .replace(/New$/, ''),
                 time: new Date(page('time', this).attr('datetime')),
                 fileName: `${pagesForum}${time.getTime()}--${type}_${title}.html`,
                 post: page('div.bbWrapper', this).html()
