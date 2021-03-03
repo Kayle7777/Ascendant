@@ -30,10 +30,10 @@ class GetPost {
   constructor(scrapedPost) {
     this.localFiles = null; // [ { title: string, post: string } ]
     this.scrapedPost = null; // type
-    // title
-    // time
-    // fileName
-    // post
+                            // title
+                            // time
+                            // fileName
+                            // post
     this.isDuplicate = null; // Boolean; true if post is present on disk already
     this.updateLocalFiles();
     this.scrapedPost = scrapedPost;
@@ -43,17 +43,7 @@ class GetPost {
 
 fetch.getJayfictionPosts((posts) => {
   for (let i = 0; i < posts.length; i++) {
-    // gets the post and writes it
     const post = posts[i];
     new GetPost(post);
-    if (i > 4) {
-        // console.log(posts[i]);
-        break;
-    }
-  }
-  // iterate it again to do the sidebar links
-  for (let i = 0; i < posts.length; i++) {
-    // const post = posts[i];
-    // fs.writeFileSync(path.join(__dirname, 'pages-forum', post.fileName), format.addSidebarButtons(post.fileName)(post.post));
   }
 });

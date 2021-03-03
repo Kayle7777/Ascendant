@@ -12,7 +12,7 @@ module.exports = {
       module.exports.addLocalCss,
       module.exports.addJQueryCDN,
       module.exports.addLocalJs,
-      module.exports.addSidebarButtons(post)
+      module.exports.addSidebarButtons(fileName)
     )(post);
   },
 
