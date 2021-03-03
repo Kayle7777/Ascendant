@@ -18,8 +18,11 @@ class GetPost {
     this.localFiles = scripts.files.getLocalFiles();
   }
   async init() {
+    if (this.localFiles.some((localFileName) => localFileName.fileName === this.scrapedPost.fileName)) {
+      return;
+    }
+    console.log(`writing ${this.scrapedPost.fileName}`);
     let toWrite = await format.buildHtmlPipe(this.scrapedPost.post, this.scrapedPost.fileName);
-    if (!toWrite) return;
     this.writeFile(this.scrapedPost, toWrite);
   }
 
@@ -30,10 +33,10 @@ class GetPost {
   constructor(scrapedPost) {
     this.localFiles = null; // [ { title: string, post: string } ]
     this.scrapedPost = null; // type
-                            // title
-                            // time
-                            // fileName
-                            // post
+    // title
+    // time
+    // fileName
+    // post
     this.isDuplicate = null; // Boolean; true if post is present on disk already
     this.updateLocalFiles();
     this.scrapedPost = scrapedPost;
