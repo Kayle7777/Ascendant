@@ -5,14 +5,14 @@ const fs = require('fs'),
 
 module.exports = {
   pipe: (...fns) => (x) => fns.reduce((v, f) => f(v), x),
-  buildHtmlPipe: async (post, fileName) => {
+  buildHtmlPipe: (post, fileName) => {
     return module.exports.pipe(
       module.exports.removeStyle,
       module.exports.addStorytextDiv,
       module.exports.addLocalCss,
       module.exports.addJQueryCDN,
       module.exports.addLocalJs,
-      await module.exports.addSidebarButtons(post)
+      module.exports.addSidebarButtons(post)
     )(post);
   },
 
@@ -43,21 +43,17 @@ module.exports = {
     // Get absolute path
     //   .map(name => path.join(__dirname, 'pages-forum', name));
     return (fileText) => {
-      new Promise((resolve, reject) => {
         let $ = fileText.toCheerioObject(),
           filenames = scripts.files.getLocalFilenames(),
           prevButtonLink = filenames[filenames.indexOf(fileName) - 1] || filenames[filenames.length - 1],
           nextButtonLink = filenames[filenames.indexOf(fileName) + 1] || filenames[0];
-        console.log(prevButtonLink);
-        console.log(nextButtonLink);
         $('.storytext').prepend(
           $(`<div class="sidenav"><a type='button' rel='noopener noreferrer' href="${prevButtonLink}"></a></div>`)
         );
         $('.storytext').append(
           $(`<div class="sidenav-right"><a type='button' rel='noopener noreferrer' href="${nextButtonLink}"></a></div>`)
         );
-        return resolve($.html());
-      });
+        return $.html();
     };
   },
 

@@ -3,8 +3,6 @@ const path = require('path'),
   fs = require('fs'),
   cheerio = require('cheerio');
 
-const { pipe } = require('./format.js');
-
 Object.defineProperty(String.prototype, 'toCheerioObject', {
   value: function () {
     return cheerio.load(this);
@@ -15,19 +13,13 @@ const scripts = require('./scripts.js'),
   format = require('./format.js'),
   fetch = require('./fetch.js');
 
-// init, find what story pieces we already have
-
 class GetPost {
   updateLocalFiles() {
-    // console.log(scripts.files.getLocalFiles());
     this.localFiles = scripts.files.getLocalFiles();
   }
   async init() {
-    // Check post name against fileName;
-    // if (this.localFiles.some((lf) => lf.title.replace(/^\w+(?<=_)/, '') === this.scrapedPost.title)) {
-    //   return; // don't need to do anything
-    // }
     let toWrite = await format.buildHtmlPipe(this.scrapedPost.post, this.scrapedPost.fileName);
+    if (!toWrite) return;
     this.writeFile(this.scrapedPost, toWrite);
   }
 
