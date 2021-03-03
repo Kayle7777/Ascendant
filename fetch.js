@@ -6,15 +6,15 @@ const fetch = require('node-fetch'),
         { url: 'https://forums.spacebattles.com/threads/imperium-ascendant-heresy-less-40k.596194/reader/', pages: 7 },
         {
             url: 'https://forums.spacebattles.com/threads/imperium-ascendant-heresy-less-40k.596194/16/reader/',
-            pages: 4,
+            pages: 5, // how to make this dynamic?
         },
         {
             url: 'https://forums.spacebattles.com/threads/imperium-ascendant-heresy-less-40k.596194/13/reader/',
-            pages: 2,
+            pages: 2, // how to make this dynamic?
         },
         {
             url: 'https://forums.spacebattles.com/threads/imperium-ascendant-heresy-less-40k.596194/19/reader/',
-            pages: 3,
+            pages: 3, // how to make this dynamic?
         },
     ];
 
