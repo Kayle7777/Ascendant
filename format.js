@@ -1,18 +1,17 @@
 'use strict';
 const fs      = require('fs'),
       path    = require('path'),
-      scripts = require('scripts.js'),
-      pipe    = (...fns) => (x) => fns.reduce((v, f) => f(v), x);
+      scripts = require('./scripts.js');
 
 module.exports = {    
+    pipe: (...fns) => (x) => fns.reduce((v, f) => f(v), x),
     buildHtmlPipe: (post, fileName) => {
-        return pipe(
-                this.removeStyle,
-                this.addStorytextDiv,
-                this.addLocalCss,
-                this.addJQueryCDN,
-                this.addLocalJs,
-                this.addSidebarButtons(fileName),
+        return module.exports.pipe(
+                module.exports.removeStyle,
+                module.exports.addStorytextDiv,
+                module.exports.addLocalCss,
+                module.exports.addJQueryCDN,
+                module.exports.addLocalJs,
             )(post);
     },
 
@@ -45,16 +44,16 @@ module.exports = {
         );
     },
 
-    addSidebarButtons: (fileName, editFolder = false) => {
+    addSidebarButtons: (fileName) => {
         // Get absolute path
-        const filenames = scripts.getLocalFilenames()
-                          .map(name => path.join(__dirname, editFolder ? 'pages-edited' : 'pages-forum', name));
-        
+        const filenames = scripts.files.getLocalFilenames();
+                        //   .map(name => path.join(__dirname, 'pages-forum', name));
         return fileText => {
             let              $ = fileText.toCheerioObject(),
                 prevButtonLink = filenames[filenames.indexOf(fileName) - 1] || filenames[filenames.length - 1],
                 nextButtonLink = filenames[filenames.indexOf(fileName) + 1] || filenames[0];
-
+            console.log(prevButtonLink);
+            console.log(nextButtonLink);
             $('.storytext').prepend($(`<div class="sidenav"><a type='button' rel='noopener noreferrer' href="${prevButtonLink}"></a></div>`));
             $('.storytext').append($(`<div class="sidenav-right"><a type='button' rel='noopener noreferrer' href="${nextButtonLink}"></a></div>`));
             return $.html();
@@ -62,22 +61,25 @@ module.exports = {
     },
 
     scrapePageForJayfictionPosts: function(page) {
-        page = page.toCheerioObject();
+        const $ = page.toCheerioObject();
         const articles = [];
-        page('article.hasThreadmark[data-author="Jayfiction"]').each(function() {
-            return articles.push({
-                type: page('.message-cell--threadmark-header label', this)
+        $('article.hasThreadmark[data-author="Jayfiction"]').each(function() {
+            let time = new Date($('time', this).attr('datetime')),
+                type = $('.message-cell--threadmark-header label', this)
                         .text()
                         .replace(/[\\\/:]/g, '-')
                         .replace(/"/g, ''),
-                title: page('.message-cell--threadmark-header span', this)
+                title = $('.message-cell--threadmark-header span', this)
                         .text()
                         .replace(/[\\\/:]/g, '-')
                         .replace(/"/g, '')
-                        .replace(/New$/, ''),
-                time: new Date(page('time', this).attr('datetime')),
+                        .replace(/New$/, '')
+            return articles.push({
+                type: type,
+                title: title,
+                time: time,
                 fileName: `${time.getTime()}--${type}_${title}.html`,
-                post: page('div.bbWrapper', this).html()
+                post: $('div.bbWrapper', this).html()
             });
         });
         return articles;

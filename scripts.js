@@ -1,44 +1,38 @@
-'use strict';
-
-Object.defineProperty( String.prototype, 'toCheerioObject', {
-    value: function() {
-        return cheerio.load(this);
-    },
-});
-
 const fs          = require('fs'),
       path        = require('path'),
-      cheerio     = require('cheerio'),
-      fetch       = require('node-fetch'),
-      fetchScripts= require('./fetch.js'),
-      formatting  = require('./format.js');
+      fetch       = require('node-fetch'); // for images
 
-
-const exports = {
-    getLocalFilenames: (editedFolder = false) => {
-        let _folder = __dirname + (editedFolder ? '/pages-forum/' : '/pages-edited/');
-        return fs.readdirSync(_folder)
-                 .filter(name => !/\.js$|\.css$/.test(name))
+module.exports = {
+    files: {
+        getLocalFilenames: () => {
+            let _folder = __dirname + '/pages-forum/';
+            return fs.readdirSync(_folder)
+                    .filter(name => !/\.js$|\.css$/.test(name))
+        },
+        
+        getLocalFiles: function() {
+            let _folder = __dirname + '/pages-forum/';
+            return this.getLocalFilenames().reduce((accu, fileName) => {
+                const fullPath = path.join(_folder, fileName);
+                accu.push({
+                    time: fileName.replace(/(?!\d+).*/, ''),
+                    title: fileName.replace(/^\d+--(.+)\.html$/, '$1'),
+                    fileName: fileName,
+                    post: fs.readFileSync(fullPath, { encoding: 'utf-8' })
+                });
+                return accu;    
+            }, [])
+        }
     },
-    
-    getLocalFiles: function(editedFolder = false) {
-        let _folder = __dirname + (editedFolder ? '/pages-forum/' : '/pages-edited/');
-        return this.getLocalFilenames(editedFolder).reduce((accu, fileName, i) => {
-            i = i.toString();
-            const fullPath = path.join(_folder, fileName);
-            accu[i] = {
-                title: fileName,
-                value: fs.readFileSync(fullPath, { encoding: 'utf-8' })
-            }
-            return accu;    
-        }, {})
-    },
-}
 
-module.exports = exports;
+    images: {
+        getImageUrls: function(fileText) {    
+            var $ = fileText.toCheerioObject();
+            return $('img').map((i, e) => $(e).attr('href').text());
+        },
 
-function downloadPictures() {
-    let localFiles = exports.getLocalFiles();
-    
-}
-downloadPictures();
+        getImageStream: function(imageUrl) {
+            return fetch(imageUrl);
+        },
+    }
+};

@@ -3,10 +3,10 @@
 const fetch = require('node-fetch'),
     formatting = require('./format'),
     baseUrls = [
-        { url: 'https://forums.spacebattles.com/threads/imperium-ascendant-heresy-less-40k.596194/reader/', pages: 6 },
+        { url: 'https://forums.spacebattles.com/threads/imperium-ascendant-heresy-less-40k.596194/reader/', pages: 7 },
         {
             url: 'https://forums.spacebattles.com/threads/imperium-ascendant-heresy-less-40k.596194/16/reader/',
-            pages: 3,
+            pages: 4,
         },
         {
             url: 'https://forums.spacebattles.com/threads/imperium-ascendant-heresy-less-40k.596194/13/reader/',
@@ -59,5 +59,5 @@ module.exports = {
             (reject) => console.log(reject)
         )
         .catch((err) => console.log(err));
-    },
+    }
 };
