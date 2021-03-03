@@ -46,10 +46,10 @@ fetch.getJayfictionPosts((posts) => {
     // gets the post and writes it
     const post = posts[i];
     new GetPost(post);
-    // if (i > 2) {
-    //     // console.log(posts[i]);
-    //     break;
-    // }
+    if (i > 4) {
+        // console.log(posts[i]);
+        break;
+    }
   }
   // iterate it again to do the sidebar links
   for (let i = 0; i < posts.length; i++) {
