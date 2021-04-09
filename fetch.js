@@ -6,7 +6,7 @@ const fetch = require('node-fetch'),
         { url: 'https://forums.spacebattles.com/threads/imperium-ascendant-heresy-less-40k.596194/reader/', pages: 7 },
         {
             url: 'https://forums.spacebattles.com/threads/imperium-ascendant-heresy-less-40k.596194/16/reader/',
-            pages: 5, // how to make this dynamic?
+            pages: 7, // how to make this dynamic?
         },
         {
             url: 'https://forums.spacebattles.com/threads/imperium-ascendant-heresy-less-40k.596194/13/reader/',

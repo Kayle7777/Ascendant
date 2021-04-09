@@ -32,13 +32,13 @@ class GetPost {
 
   constructor(scrapedPost, alreadyCompiled = false) {
     this.localFiles = null; // [ { title: string, post: string } ]
-    this.scrapedPost = null; // type
-    this.alreadyCompiled = alreadyCompiled;
+    this.alreadyCompiled = alreadyCompiled; // Boolean; true if post is already formatted
+    this.scrapedPost = null; 
+    // type
     // title
     // time
     // fileName
     // post
-    this.isDuplicate = null; // Boolean; true if post is present on disk already
     this.updateLocalFiles();
     this.scrapedPost = scrapedPost;
     this.init();
