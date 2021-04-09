@@ -5,7 +5,10 @@ const fs = require('fs'),
 
 module.exports = {
   pipe: (...fns) => (x) => fns.reduce((v, f) => f(v), x),
-  buildHtmlPipe: (post, fileName) => {
+  buildHtmlPipe: (post, fileName, alreadyCompiled) => {
+    if (alreadyCompiled) {
+      return post;
+    }
     return module.exports.pipe(
       module.exports.removeStyle,
       module.exports.addStorytextDiv,
